@@ -1,5 +1,5 @@
 esphome:
-  name: vloerverwarming
+  name: ${esphome_name}
   platform: ESP8266
   board: esp01_1m
 
@@ -8,7 +8,7 @@ wifi:
   - ssid: !secret wifi_ssid
     password: !secret wifi_password
   ap:
-    ssid: "Vloerverwarming Hotspot"
+    ssid: "${template_variables_name} Hotspot"
     password: !secret ap_password
 
 api:
@@ -40,12 +40,12 @@ binary_sensor:
   pin:
     number: GPIO0
     mode: INPUT_PULLUP
-  name: "Vloerverwarming Power Button"
+  name: "${template_variables_name} Power Button"
   on_press:
   - switch.toggle: relay
 
 - platform: status
-  name: "Vloerverwarming Status"
+  name: "${template_variables_name} Status"
 
 switch:
 - platform: gpio
@@ -55,18 +55,18 @@ switch:
     inverted: true
 
 - platform: gpio
-  name: "Vloerverwarming"
+  name: "${template_variables_name}"
   pin: GPIO12
   id: relay
-  icon: mdi:radiator
+  icon: ${template_variables_icon}
   restore_mode: RESTORE_DEFAULT_OFF
 
 - platform: restart
-  name: "Vloerverwarming Restart"
+  name: "${template_variables_name} Restart"
 
 sensor:
 - platform: wifi_signal
-  name: "Vloerverwarming WiFi Signal"
+  name: "${template_variables_name} WiFi Signal"
   update_interval: 60s
   filters:
   - sliding_window_moving_average:
@@ -77,22 +77,22 @@ sensor:
 - platform: cse7766
   update_interval: 15s
   current:
-    name: "Vloerverwarming Current"
+    name: "${template_variables_name} Current"
     filters:
     - sliding_window_moving_average:
         window_size: 10
         send_every: 10
         send_first_at: 1
   voltage:
-    name: "Vloerverwarming Voltage"
+    name: "${template_variables_name} Voltage"
     filters:
     - sliding_window_moving_average:
         window_size: 10
         send_every: 10
         send_first_at: 1
   power:
-    name: "Vloerverwarming Current Consumption"
-    id: vloerverwarming_wattage
+    name: "${template_variables_name} Current Consumption"
+    id: ${template_variables_name}_wattage
     filters:
     - sliding_window_moving_average:
         window_size: 10
@@ -100,8 +100,8 @@ sensor:
         send_first_at: 1
 
 - platform: total_daily_energy
-  name: "Vloerverwarming Today's Consumption"
-  power_id: vloerverwarming_wattage
+  name: "${template_variables_name} Today\'s Consumption"
+  power_id: ${template_variables_name}_wattage
   filters:
   - multiply: 0.001
   unit_of_measurement: kWh

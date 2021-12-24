@@ -6,7 +6,15 @@ before_script:
   - apk update && apk add openssh sshpass
 
 stages:
+  - build
   - deploy
+
+build:
+  stage: build
+  artifacts:
+    untracked: true
+  script: 
+    - sh ./build.sh
 
 deploy:
   stage: deploy
