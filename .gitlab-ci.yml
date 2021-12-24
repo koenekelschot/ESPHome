@@ -1,0 +1,16 @@
+image: 
+  name: docker/compose:1.29.1
+
+before_script:
+  # https://unix.stackexchange.com/a/417661
+  - apk update && apk add openssh sshpass
+
+stages:
+  - deploy
+
+deploy:
+  stage: deploy
+  only:
+    - master
+  script: 
+    - sh ./deploy.sh
