@@ -41,11 +41,13 @@ function render_template {
     
     eval $(parse_yaml $template)
     export esphome_name=$(echo ${template_variables_name} | tr ' ' '-' | tr '[:upper:]' '[:lower:]')
+    export template_variables_id=$(echo ${template_variables_name} | tr ' -' '_' | tr '[:upper:]' '[:lower:]')
 
     # https://pempek.net/articles/2013/07/08/bash-sh-as-template-engine/
     eval "echo \"$(cat ./templates/${template_file}.yaml)\"" > "${esphome_name}.yaml"
 
     unset esphome_name
+    unset template_variables_id
 }
 
 for file in `find . -type f -name "*.template.yaml" 2>/dev/null`
