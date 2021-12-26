@@ -1,8 +1,6 @@
-image: 
-  name: docker/compose:1.29.1
-
 stages:
   - build
+  - test
   - deploy
   - docker
 
@@ -15,6 +13,16 @@ build:
   script: 
     - echo -n "ESPHOME_VERSION=" | cat - .ESPHOME_VERSION >> build.env
     - sh ./build/build.sh
+
+test:
+  stage: test
+  dependencies:
+    - build
+  image:
+    name: esphome/esphome:$ESPHOME_VERSION
+    entrypoint: [""]
+  script:
+    - sh ./build/test.sh
 
 deploy:
   stage: deploy
