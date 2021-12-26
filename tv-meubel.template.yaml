@@ -1,0 +1,5 @@
+template:
+  file: sonoff_pow_r2
+  variables:
+    name: TV-meubel
+    icon: mdi:television
