@@ -1,24 +1,35 @@
 image: 
   name: docker/compose:1.29.1
 
-before_script:
-  # https://unix.stackexchange.com/a/417661
-  - apk update && apk add openssh sshpass
-
 stages:
   - build
   - deploy
+  - docker
 
 build:
   stage: build
   artifacts:
     untracked: true
+    reports:
+      dotenv: build.env
   script: 
-    - sh ./build.sh
+    - echo -n "ESPHOME_VERSION=" | cat - .ESPHOME_VERSION >> build.env
+    - sh ./build/build.sh
 
 deploy:
   stage: deploy
   only:
     - master
-  script: 
-    - sh ./deploy.sh
+  script:
+    # https://unix.stackexchange.com/a/417661
+    - apk update && apk add openssh sshpass
+    - sh ./build/deploy.sh
+
+docker:
+  stage: docker
+  only:
+    refs:
+      - master
+    changes:
+      - .ESPHOME_VERSION
+  trigger: koen/docker

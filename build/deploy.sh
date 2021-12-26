@@ -6,8 +6,13 @@ copy_file() {
 }
 
 export SSHPASS=$SSH_PASS
+
+#copy .ESPHOME_VERSION to main Docker folder
+sshpass -e scp -o StrictHostKeyChecking=no .ESPHOME_VERSION $SSH_USER:$SSH_FOLDER_DOCKER/.ESPHOME_VERSION
+
 echo "Cleaning folder"
 sshpass -e ssh -o StrictHostKeyChecking=no $SSH_USER "find $SSH_FOLDER_ESPHOME -type f -name *.yaml -not -name secrets.yaml -exec rm {} \;"
+
 echo "Copying files"
 for i in `find . -maxdepth 1 -type f -name "*.yaml" -not -name "*.template.yaml" -not -name "fake_secrets.yaml" 2>/dev/null`
 do
