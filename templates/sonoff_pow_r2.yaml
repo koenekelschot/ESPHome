@@ -2,6 +2,7 @@ esphome:
   name: ${esphome_name}
   platform: ESP8266
   board: esp01_1m
+  esp8266_restore_from_flash: true
 
 wifi:
   networks:
@@ -59,7 +60,7 @@ switch:
   pin: GPIO12
   id: relay
   icon: ${template_variables_icon}
-  restore_mode: RESTORE_DEFAULT_OFF
+  restore_mode: RESTORE_DEFAULT_ON
 
 - platform: restart
   name: ${template_variables_name} Restart
