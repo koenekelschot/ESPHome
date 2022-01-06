@@ -1,23 +1,21 @@
 stages:
-  - build
+  - init
   - test
   - deploy
   - docker
 
-build:
-  stage: build
+init:
+  stage: init
   artifacts:
-    untracked: true
     reports:
-      dotenv: build.env
+      dotenv: init.env
   script: 
-    - echo -n "ESPHOME_VERSION=" | cat - .ESPHOME_VERSION >> build.env
-    - sh ./build/build.sh
+    - echo -n "ESPHOME_VERSION=" | cat - .ESPHOME_VERSION >> init.env
 
 test:
   stage: test
   dependencies:
-    - build
+    - init
   image:
     name: esphome/esphome:$ESPHOME_VERSION
     entrypoint: [""]

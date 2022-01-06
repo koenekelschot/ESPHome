@@ -1,0 +1,8 @@
+substitutions:
+  device_name: vloerverwarming
+  device_id: vloerverwarming
+  display_name: Vloerverwarming
+  icon: mdi:radiator
+  restore_mode: RESTORE_DEFAULT_ON
+
+<<: !include .sonoff_pow_r2.template.yaml

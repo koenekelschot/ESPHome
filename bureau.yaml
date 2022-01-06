@@ -1,0 +1,8 @@
+substitutions:
+  device_name: bureau
+  device_id: bureau
+  display_name: Bureau
+  icon: mdi:desk
+  restore_mode: RESTORE_DEFAULT_ON
+
+<<: !include .sonoff_pow_r2.template.yaml

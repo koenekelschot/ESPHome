@@ -1,0 +1,8 @@
+substitutions:
+  device_name: tv-meubel
+  device_id: tv_meubel
+  display_name: TV-meubel
+  icon: mdi:television
+  restore_mode: RESTORE_DEFAULT_OFF
+
+<<: !include .sonoff_pow_r2.template.yaml

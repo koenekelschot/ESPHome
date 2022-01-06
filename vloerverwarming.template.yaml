@@ -1,5 +1,0 @@
-template:
-  file: sonoff_pow_r2
-  variables:
-    name: Vloerverwarming
-    icon: mdi:radiator

@@ -1,0 +1,8 @@
+substitutions:
+  device_name: cv-ketel
+  device_id: cv_ketel
+  display_name: CV-ketel
+  icon: mdi:water-boiler
+  restore_mode: RESTORE_DEFAULT_ON
+
+<<: !include .sonoff_pow_r2.template.yaml

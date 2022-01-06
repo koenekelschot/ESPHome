@@ -1,0 +1,8 @@
+substitutions:
+  device_name: nas
+  device_id: nas
+  display_name: NAS
+  icon: mdi:nas
+  restore_mode: RESTORE_DEFAULT_ON
+
+<<: !include .sonoff_pow_r2.template.yaml

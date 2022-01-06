@@ -1,0 +1,8 @@
+substitutions:
+  device_name: boiler-keuken
+  device_id: boiler_keuken
+  display_name: Boiler keuken
+  icon: mdi:water-boiler
+  restore_mode: RESTORE_DEFAULT_OFF
+
+<<: !include .sonoff_pow_r2.template.yaml
