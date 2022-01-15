@@ -1,0 +1,8 @@
+substitutions:
+  device_name: meterkast
+  device_id: meterkast
+  display_name: Meterkast
+  icon: mdi:home-lightning-bolt-outline
+  restore_mode: RESTORE_DEFAULT_ON
+
+<<: !include .sonoff_pow_r2.template.yaml

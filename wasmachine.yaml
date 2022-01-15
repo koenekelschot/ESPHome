@@ -1,0 +1,8 @@
+substitutions:
+  device_name: wasmachine
+  device_id: wasmachine
+  display_name: Wasmachine
+  icon: mdi:washing-machine
+  restore_mode: RESTORE_DEFAULT_OFF
+
+<<: !include .sonoff_pow_r2.template.yaml
