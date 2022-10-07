@@ -11,6 +11,10 @@ stages:
   image:
     name: esphome/esphome:$ESPHOME_VERSION
     entrypoint: [""]
+  rules:
+    - changes:
+        - $file
+        - .ESPHOME_VERSION
   script:
     - mv $CI_PROJECT_DIR/fake_secrets.yaml $CI_PROJECT_DIR/secrets.yaml
     - esphome compile $CI_PROJECT_DIR/$file
@@ -64,6 +68,9 @@ deploy:
   stage: deploy
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      changes:
+        - "**/*.yaml"
+        - .ESPHOME_VERSION
   image: alpine:latest
   before_script:
     - apk update && apk add openssh-client rsync
