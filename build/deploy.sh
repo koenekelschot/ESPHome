@@ -9,5 +9,5 @@ echo "Copying files"
 for i in `find . -maxdepth 1 -type f -name "*.yaml" -not -name "fake_secrets.yaml" 2>/dev/null`
 do
     echo "Copying file $i"
-    rsync -athv .ESPHOME_VERSION $SSH_USER@$SSH_HOST:$SSH_FOLDER_DOCKER/volumes/esphome/$i
+    rsync -athv $i $SSH_USER@$SSH_HOST:$SSH_FOLDER_DOCKER/volumes/esphome/$i
 done

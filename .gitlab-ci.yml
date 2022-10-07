@@ -4,6 +4,17 @@ stages:
   - deploy
   - docker
 
+.test_template: &test_tpl
+  stage: test
+  dependencies:
+    - init
+  image:
+    name: esphome/esphome:$ESPHOME_VERSION
+    entrypoint: [""]
+  script:
+    - mv $CI_PROJECT_DIR/fake_secrets.yaml $CI_PROJECT_DIR/secrets.yaml
+    - esphome compile $CI_PROJECT_DIR/$file
+
 init:
   stage: init
   artifacts:
@@ -12,20 +23,47 @@ init:
   script: 
     - echo -n "ESPHOME_VERSION=" | cat - .ESPHOME_VERSION >> init.env
 
-test:
-  stage: test
-  dependencies:
-    - init
-  image:
-    name: esphome/esphome:$ESPHOME_VERSION
-    entrypoint: [""]
-  script:
-    - sh ./build/test.sh
+test_boiler_keuken:
+  variables:
+    file: boiler_keuken.yaml
+  <<: *test_tpl
+test_bureau:
+  variables:
+    file: bureau.yaml
+  <<: *test_tpl
+test_cv:
+  variables:
+    file: cv.yaml
+  <<: *test_tpl
+test_kantoor_plant:
+  variables:
+    file: kantoor_plant.yaml
+  <<: *test_tpl
+test_meterkast:
+  variables:
+    file: meterkast.yaml
+  <<: *test_tpl
+test_nas:
+  variables:
+    file: nas.yaml
+  <<: *test_tpl
+test_tv:
+  variables:
+    file: tv.yaml
+  <<: *test_tpl
+test_vloerverwarming:
+  variables:
+    file: vloerverwarming.yaml
+  <<: *test_tpl
+test_wasmachine:
+  variables:
+    file: wasmachine.yaml
+  <<: *test_tpl
 
 deploy:
   stage: deploy
-  only:
-    - master
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
   image: alpine:latest
   before_script:
     - apk update && apk add openssh-client rsync
@@ -39,9 +77,8 @@ deploy:
 
 docker:
   stage: docker
-  only:
-    refs:
-      - master
-    changes:
-      - .ESPHOME_VERSION
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      changes:
+        - .ESPHOME_VERSION
   trigger: koen/docker
