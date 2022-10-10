@@ -1,5 +1,8 @@
+---
 stages:
-  - init
+  - setup
+  - lint
+  - pull
   - test
   - deploy
   - docker
@@ -7,7 +10,7 @@ stages:
 .test_template: &test_tpl
   stage: test
   dependencies:
-    - init
+    - setup
   image:
     name: esphome/esphome:$ESPHOME_VERSION
     entrypoint: [""]
@@ -19,47 +22,68 @@ stages:
     - mv $CI_PROJECT_DIR/fake_secrets.yaml $CI_PROJECT_DIR/secrets.yaml
     - esphome compile $CI_PROJECT_DIR/$file
 
-init:
-  stage: init
+setup:
+  stage: setup
   artifacts:
     reports:
       dotenv: init.env
-  script: 
+  script:
     - echo -n "ESPHOME_VERSION=" | cat - .ESPHOME_VERSION >> init.env
 
-test_boiler_keuken:
+lint yaml:
+  stage: lint
+  image: sdesbure/yamllint
+  before_script:
+    - yamllint --version
+  script:
+    - yamllint .
+
+pull docker image:
+  stage: pull
+  dependencies:
+    - setup
+  image:
+    name: esphome/esphome:$ESPHOME_VERSION
+    entrypoint: [""]
+  rules:
+    - changes:
+        - .ESPHOME_VERSION
+  script:
+    - esphome version
+
+test boiler_keuken:
   variables:
     file: boiler_keuken.yaml
   <<: *test_tpl
-test_bureau:
+test bureau:
   variables:
     file: bureau.yaml
   <<: *test_tpl
-test_cv:
+test cv:
   variables:
     file: cv.yaml
   <<: *test_tpl
-test_kantoor_plant:
+test kantoor_plant:
   variables:
     file: kantoor_plant.yaml
   <<: *test_tpl
-test_meterkast:
+test meterkast:
   variables:
     file: meterkast.yaml
   <<: *test_tpl
-test_nas:
+test nas:
   variables:
     file: nas.yaml
   <<: *test_tpl
-test_tv:
+test tv:
   variables:
     file: tv.yaml
   <<: *test_tpl
-test_vloerverwarming:
+test vloerverwarming:
   variables:
     file: vloerverwarming.yaml
   <<: *test_tpl
-test_wasmachine:
+test wasmachine:
   variables:
     file: wasmachine.yaml
   <<: *test_tpl
